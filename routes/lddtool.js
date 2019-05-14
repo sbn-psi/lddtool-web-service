@@ -12,42 +12,56 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res, next) {
     // Remove all files from temporary directories
-    Promise.all(['tmp', 'tar'].map(dir => fse.emptyDir(dir))).then(() => {
-        console.log('emptied temporary directories');
-        getIngestFile(req, res);
-    });
+    clearTempDirs();
     
-    function getIngestFile(req, res, callback) {
+    function clearTempDirs() {
+        Promise.all(['tmp', 'tar'].map(dir => fse.emptyDir(dir))).then(() => {
+            console.log('emptied temporary directories');
+            getIngestFile();
+        });
+    };
+    
+    function getIngestFile() {
         const busboy = new Busboy({
             headers: req.headers
         });
         
-        busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-            const INGEST_BASENAME = path.basename(filename, '.xml');
-            const workdir = `tmp/${INGEST_BASENAME}`;
-            fse.mkdirSync(workdir);
-            
-            const STREAM = fse.createWriteStream(path.resolve(workdir, filename));
-            file.pipe(STREAM);
-            
-            STREAM.on('close', function runLddTool() {
-                const INGEST_FILE_PATH = path.resolve(__dirname, '../tmp', INGEST_BASENAME, filename);
-                
-                // 2. Run LDD Tool
-                const CMD = shell.exec(`cd ${workdir} && lddtool -lp --sync ${INGEST_BASENAME}.xml > ${INGEST_BASENAME}.log`);
-                console.log(`Exit: ${CMD.code}\n`);
-                
-                // 3. Zip up artifacts and send them back to client
-                const TAR_NAME = `tar-${INGEST_BASENAME}.tar.gz`;
-                const TAR_DIR = '../tar';
-                
-                shell.exec(`cd tmp && tar -zcf ${TAR_NAME} ${INGEST_BASENAME} && mv ${TAR_NAME} ${TAR_DIR}`);
-                
-                res.download(path.resolve(__dirname, TAR_DIR, TAR_NAME));
-            });
-        });
+        busboy.on('file', saveFile);
         
-        return req.pipe(busboy);
+        req.pipe(busboy);
+    };
+    
+    function saveFile(fieldname, file, filename, encoding, mimetype) {
+        const INGEST_BASENAME = path.basename(filename, '.xml');
+        const WORK_DIR = `tmp/${INGEST_BASENAME}`;
+        fse.mkdirSync(WORK_DIR);
+        
+        const STREAM = fse.createWriteStream(path.resolve(WORK_DIR, filename));
+        file.pipe(STREAM);
+        
+        STREAM.on('close', function() {
+            runLddTool(INGEST_BASENAME, WORK_DIR, filename);
+        });
+    };
+    
+    function runLddTool(basename, workdir, filename) {
+        const INGEST_FILE_PATH = path.resolve(__dirname, '../tmp', basename, filename);
+        const CMD = shell.exec(`cd ${workdir} && lddtool -lp --sync ${basename}.xml > ${basename}.log`);
+        
+        console.log(`Exit: ${CMD.code}\n`);
+        
+        sendZip(basename);
+    };
+    
+    function sendZip(basename) {
+        // Zip up artifacts and send them back to client
+        const TAR_NAME = `tar-${basename}.tar.gz`;
+        const TAR_DIR = '../tar';
+        const CMD = `cd tmp && tar -zcf ${TAR_NAME} ${basename} && mv ${TAR_NAME} ${TAR_DIR}`;
+        
+        shell.exec(CMD);
+        
+        res.download(path.resolve(__dirname, TAR_DIR, TAR_NAME));
     };
 });
 
