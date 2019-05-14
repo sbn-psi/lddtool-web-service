@@ -1,0 +1,30 @@
+{
+  "name": "ldd-tool-web-service",
+  "version": "1.0.0",
+  "description": "A Docker container and API for the PDS LDD Tool.",
+  "main": "server.js",
+  "scripts": {
+    "docker-build": "scripts/docker.build.sh",
+    "docker-clean": "scripts/docker.clean.sh",
+    "docker-ssh": "scripts/docker.ssh.sh",
+    "docker-start": "scripts/docker.start.sh",
+    "docker-stop": "./scripts/docker.stop.sh",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sbn-psi/ldd-tool-web-service.git"
+  },
+  "author": "Conor Kingston",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "busboy": "^0.3.1",
+    "express": "^4.16.4",
+    "file-system": "^2.2.2",
+    "fs-extra": "^8.0.1",
+    "path": "^0.12.7",
+    "shelljs": "^0.8.3"
+  }
+}
