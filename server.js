@@ -4,7 +4,9 @@ const PORT = 3002;
 
 const app = express();
 app.use(express.static('src'));
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    type: ['application/json','application/gzip']
+}));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
