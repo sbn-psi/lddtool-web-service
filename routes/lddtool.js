@@ -43,23 +43,23 @@ router.post('/', function(req, res, next) {
 
             const contentType = req.headers['content-type'];
 
-            switch (contentType) {
-                case 'multipart/form-data':
-                    startBusboy();
-                    break;
-                case 'application/json':
-                    ingestFile = new IngestFile(req.body.filename, req.body.xml, path.basename(req.body.filename, '.xml'));
-                    
-                    fse.mkdirSync(ingestFile.workDir);
-                    
-                    fse.writeFile(path.resolve(ingestFile.workDir, ingestFile.filename), ingestFile.xml, function() {
-                        runLddTool(sendJson); 
-                    });
-                    
-                    break;
-                default:
-                    console.error(`unexpected content-type: ${contentType}`);
-                    break;
+            function contentTypeIncludes(ct) {
+                const regex = new RegExp(ct,'g');
+                return regex.test(contentType);
+            };
+            
+            if (/multipart\/form-data/g.test(contentType)) {
+                startBusboy();
+            } else if (/application\/json/g.test(contentType)) {
+                ingestFile = new IngestFile(req.body.filename, req.body.xml, path.basename(req.body.filename, '.xml'));
+                
+                fse.mkdirSync(ingestFile.workDir);
+                
+                fse.writeFile(path.resolve(ingestFile.workDir, ingestFile.filename), ingestFile.xml, function() {
+                    runLddTool(sendJson); 
+                });
+            } else {
+                console.error(`unexpected content-type: ${contentType}`);
             };
         });
     };
