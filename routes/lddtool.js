@@ -50,7 +50,7 @@ router.post('/', function(req, res, next) {
             
             if (/multipart\/form-data/g.test(contentType)) {
                 startBusboy();
-            } else if (/application\/json/g.test(contentType)) {
+            } else if (/json|x-www-form-urlencoded/g.test(contentType)) {
                 ingestFile = new IngestFile(req.body.filename, req.body.xml, path.basename(req.body.filename, '.xml'));
                 
                 fse.mkdirSync(ingestFile.workDir);
@@ -108,7 +108,7 @@ router.post('/', function(req, res, next) {
     }
     
     function sendTar() {
-        res.download(path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName));
+        res.send({ path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName) });
     };
     
     function sendJson(process) {
