@@ -112,7 +112,7 @@ router.post('/', function(req, res, next) {
     }
     
     function sendTar() {
-        if (pathOnly) res.send( path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
+        if (pathOnly) res.send( path.join(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
         else res.download( path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
     };
     
@@ -123,17 +123,13 @@ router.post('/', function(req, res, next) {
     };
 });
 
-router.post('/download', function(req, res, next) {
-    const filename = req.body.filename;
-    const downloadPath = path.resolve(__dirname, '../', ingestFile.tar.tarDir, filename);
-    
+router.get('/download', function(req, res, next) {
+    const filename = req.query.filename;
+    const downloadPath = path.join(__dirname, '../', filename);
     const exists = fse.existsSync(downloadPath);
-    
-    if (exists) {
-        res.download(downloadPath);
-    } else {
-        res.status(403).json('Invalid file name.');
-    };
+
+    if (exists) res.download(downloadPath);
+    else res.status(403).json('Invalid file name.');
 });
 
 module.exports = router;
