@@ -26,7 +26,8 @@ let IngestFile = class {
     };
 };
 
-let ingestFile;
+let ingestFile,
+    pathOnly;
 
 // Redirect GET requests to lddtool to root
 router.get('/', function(req, res) {
@@ -36,6 +37,9 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res, next) {
     // Remove all files from temporary directories
     clearTempDirs();
+    
+    if (req.headers['x-path-only'] && req.headers['x-path-only'] == 'true') pathOnly = true;
+    else pathOnly = false;
     
     function clearTempDirs() {
         Promise.all(['tmp', 'tar'].map(dir => fse.emptyDir(dir))).then(() => {
@@ -108,7 +112,8 @@ router.post('/', function(req, res, next) {
     }
     
     function sendTar() {
-        res.send({ path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName) });
+        if (pathOnly) res.send( path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
+        else res.download( path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
     };
     
     function sendJson(process) {
