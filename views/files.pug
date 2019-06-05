@@ -1,0 +1,16 @@
+include includes/head.pug
+
+h4 Success.
+
+p The following files have been generated:
+
+ul
+    each file in archiveFiles
+        li= file
+    else
+        li There are no files.
+- url = '/lddtool/download?filename=' + tarFile
+a(href=url, id='download')
+    button Download
+a(href='/')
+    button.button-outline Try Again

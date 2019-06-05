@@ -114,8 +114,13 @@ router.post('/', function(req, res, next) {
     }
     
     function sendTar() {
+        const archiveFiles = fse.readdirSync(ingestFile.workDir).map(file => file);
+        
         if (pathOnly) res.json( path.join(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
-        else res.download( path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
+        else res.render('files', {
+            tarFile: path.join(ingestFile.tar.tarDir, ingestFile.tar.tarName),
+            archiveFiles: archiveFiles
+        })
     };
     
     function sendJson(process) {
