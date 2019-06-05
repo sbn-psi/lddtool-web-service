@@ -79,6 +79,8 @@ router.post('/', function(req, res, next) {
     };
     
     function saveFile(fieldname, file, filename, encoding, mimetype) {
+        if (!/\.xml/g.test(filename)) res.status(400).json('Invalid file extension: ' + filename);
+        
         ingestFile = new IngestFile(filename, null, path.basename(filename, '.xml'));
 
         fse.mkdirSync(ingestFile.workDir);
@@ -112,7 +114,7 @@ router.post('/', function(req, res, next) {
     }
     
     function sendTar() {
-        if (pathOnly) res.send( path.join(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
+        if (pathOnly) res.json( path.join(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
         else res.download( path.resolve(ingestFile.tar.tarDir, ingestFile.tar.tarName) );
     };
     
