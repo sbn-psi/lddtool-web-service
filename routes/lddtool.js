@@ -79,7 +79,7 @@ router.post('/', function(req, res, next) {
     };
     
     function saveFile(fieldname, file, filename, encoding, mimetype) {
-        if (!/\.xml/g.test(filename)) res.status(400).json('Invalid file extension: ' + filename);
+        if (!/\.xml/g.test(filename)) return res.render('error', { message: `Invalid file extension: "${filename}"`});
         
         ingestFile = new IngestFile(filename, null, path.basename(filename, '.xml'));
 

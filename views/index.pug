@@ -1,0 +1,10 @@
+include includes/head.pug
+
+body
+    main
+        form(name='ingest_file', method='POST', action='lddtool', enctype='multipart/form-data')
+            p Choose an Ingest LDD file to upload.
+            fieldset
+                label(for='file') File
+                input(type='file', name='file', id='file', accept='.xml', required='true')
+            input(type='submit')

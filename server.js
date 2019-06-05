@@ -11,6 +11,13 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+app.set('views', './views');
+app.set('view engine', 'pug');
+
+app.get('/', function(req, res, next) {
+    res.render('index', {});
+});
+
 const lddtool = require('./routes/lddtool.js');
 app.use('/lddtool',lddtool);
 
