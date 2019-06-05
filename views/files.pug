@@ -1,21 +1,22 @@
 include includes/head.pug
 include includes/header.pug
 
-h4 Success.
+main
+    h4 Success.
 
-p The following files have been generated:
+    p The following files have been generated:
 
-ul
-    each file in archiveFiles
-        li= file
-    else
-        li There are no files.
+    ul
+        each file in archiveFiles
+            li= file
+        else
+            li There are no files.
 
-- url = 'tool/download?filename=' + tarFile
+    - url = 'tool/download?filename=' + tarFile
 
-a(href=url, id='download')
-    button Download
-a(href=BASE)
-    button.button-outline Try Again
+    a(href=url, id='download')
+        button Download
+    a(href=BASE)
+        button.button-outline Try Again
 
 include includes/footer.pug
