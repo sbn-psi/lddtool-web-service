@@ -4,11 +4,6 @@
   "description": "A Docker container and API for the PDS LDD Tool.",
   "main": "server.js",
   "scripts": {
-    "docker-build": "scripts/docker.build.sh",
-    "docker-clean": "scripts/docker.clean.sh",
-    "docker-ssh": "scripts/docker.ssh.sh",
-    "docker-start": "scripts/docker.start.sh",
-    "docker-stop": "./scripts/docker.stop.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
