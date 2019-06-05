@@ -10,7 +10,9 @@ ul
         li= file
     else
         li There are no files.
-- url = '/tool/download?filename=' + tarFile
+
+- url = 'tool/download?filename=' + tarFile
+
 a(href=url, id='download')
     button Download
 a(href=BASE)
