@@ -1,7 +1,7 @@
 version: "2"
 services:
-  ldd-transform:
-    container_name: ldd-tool-web-service
+  lddtool-web-service:
+    container_name: lddtool-web-service
     restart: always
     build: .
     ports:
