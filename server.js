@@ -18,8 +18,8 @@ app.get('/', function(req, res, next) {
     res.render('index', {});
 });
 
-const lddtool = require('./routes/lddtool.js');
-app.use('/lddtool',lddtool);
+const tool = require('./routes/tool.js');
+app.use('/tool',tool);
 
 app.listen(PORT);
 console.log(`ldd-tool-webify listening on port ${PORT}`);

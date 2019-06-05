@@ -29,7 +29,7 @@ let IngestFile = class {
 let ingestFile,
     pathOnly;
 
-// Redirect GET requests to lddtool to root
+// Redirect GET requests from tool to root
 router.get('/', function(req, res) {
     res.redirect('/');
 });

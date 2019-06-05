@@ -4,7 +4,7 @@ include includes/header.pug
 main
     p This tool provides the functionality of the #[a(href='https://pds.nasa.gov/tools/about/ldd/') PDS4 LDDTool] as a web application.
     
-    form(name='ingest_file', method='POST', action='lddtool', enctype='multipart/form-data')
+    form(name='ingest_file', method='POST', action='tool', enctype='multipart/form-data')
         p Choose an Ingest LDD file to upload.
         fieldset
             label(for='file') File
