@@ -8,13 +8,13 @@ body {
     background: #f4f5f6
 }
 main {
-    margin: 2em;
+    margin: 2em 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-header {
+header, footer {
     width: 100vw;
     padding: 0.5em;
     background: #606c76;
@@ -22,7 +22,13 @@ header {
     display: flex;
     flex-flow: row nowrap;
 }
-.header-group * {
+footer {
+    justify-content: center;
+}
+footer .group a {
+    color: #f4f5f6 !important;
+}
+.group * {
     margin: 0;
 }
 
