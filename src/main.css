@@ -5,10 +5,11 @@ body {
     justify-content:center;
     align-items:center;
     flex-direction: column;
-    background: #f4f5f6
 }
 main {
-    margin: 2em 0;
+    background: #f4f5f6;
+    padding: 2em 0;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,6 +28,11 @@ footer {
 }
 footer .group a {
     color: #f4f5f6 !important;
+    display: flex;
+}
+.group {
+    display: flex;
+    align-items: center;
 }
 .group * {
     margin: 0;
