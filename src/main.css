@@ -1,20 +1,29 @@
 body {
+    margin: 0;
+    padding: 0;
     display:flex;
     justify-content:center;
     align-items:center;
     flex-direction: column;
+    background: #f4f5f6
 }
 main {
-    width:30em;
-    border:1px solid grey;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-form {
+    margin: 2em;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+}
+header {
+    width: 100vw;
+    padding: 0.5em;
+    background: #606c76;
+    color: #f4f5f6;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.header-group * {
+    margin: 0;
 }
 
 /* Loading Spinner */
