@@ -94,7 +94,12 @@ router.post('/', function(req, res, next) {
     };
     
     function runLddTool(cb) {
-        const CMD = shell.exec(`cd ${ingestFile.workDir} && lddtool -lp --sync ${ingestFile.basename}.xml > ${ingestFile.basename}.log`);
+        const flags = [
+            'p',    // Set the context to PDS4
+            'l',    // Process a local data dictionary input file
+            's'     // Use local namespace + information model version as output file names
+        ].join('');
+        const CMD = shell.exec(`cd ${ingestFile.workDir} && lddtool -${flags} --sync ${ingestFile.basename}.xml > ${ingestFile.basename}.log`);
         
         console.log(`Exit: ${CMD.code}\n`);
         
